@@ -5,6 +5,7 @@ import { createUserValidationSchema } from '../utils/validationSchemas.mjs';
 import { resolveIndexByUserId } from '../utils/middlewares.mjs';
 import { User } from '../mongoose/schemas/user.mjs';
 import { hashPassword } from '../utils/helpers.mjs';
+import { getUserByIdHandler, postNewUser } from '../handlers/users.mjs';
 
 const router = Router();
 
@@ -31,29 +32,9 @@ router.get('/api/users', query('filter').isString().notEmpty().withMessage('Must
 });
 
 
-router.post('/api/users', checkSchema(createUserValidationSchema),async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty()) return res.status(400).send(result.array());
+router.post('/api/users', checkSchema(createUserValidationSchema), postNewUser);
 
-    const data = matchedData(req);
-    console.log(data);
-    data.password = hashPassword(data.password);
-    console.log(data);
-    const newUser = new User(data);
-    try {
-        const savedUser = await newUser.save();
-        return res.status(201).send(savedUser);
-    } catch (err) {
-        console.log(err);
-        return res.sendStatus(400);
-    }
-});
-
-router.get('/api/users/:id', resolveIndexByUserId, (req, res) => {
-    const { findUserIndex } = req;
-    const findUser = mockUsers[findUserIndex];
-    return res.send(findUser);
-});
+router.get('/api/users/:id', resolveIndexByUserId, getUserByIdHandler);
 
 router.put('/api/users/:id', resolveIndexByUserId, (req, res) => {
     const { body, findUserIndex } = req;

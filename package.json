@@ -7,6 +7,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "express-validator": "^7.3.2",
+    "jest": "^30.5.2",
     "mongoose": "^8.24.5",
     "nodemon": "^3.1.14",
     "passport": "^0.7.0",
@@ -17,7 +18,7 @@
   "version": "1.0.0",
   "main": "index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start:dev": "nodemon ./src/index.mjs",
     "start": "node .  /src/index.mjs"
   },
@@ -25,5 +26,11 @@
   "author": "",
   "license": "ISC",
   "type": "module",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@babel/core": "^8.0.7",
+    "@babel/node": "^8.0.6",
+    "@babel/preset-env": "^8.0.7",
+    "@types/jest": "^30.0.0"
+  }
 }
